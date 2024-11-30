@@ -19,6 +19,7 @@ body {
 .main {
     display: flex;
     margin: 3em;
+    gap: 2em;
 }
 .product {
     width: 70%;
@@ -33,35 +34,74 @@ body {
 .product-list .item {
     position: relative;
 }
-.product-list .item .image img{
+.item .image img{
     width: 100%;
     border-radius: 5px;
     margin-bottom: 1em;
 }
-.product-list .item button {
+.item button {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 80%;
-    height: 2.5em;
+    width: 60%;
+    height: 3em;
     background-color: #fff;
     border: solid 1px #000000;
     border-radius: 20px;
     position: absolute;
-    bottom: 20%;
-    left: 10%;
+    left: 0;
+    right: 0;
+    bottom: 5em;
+    margin: 0 auto;
+    cursor: pointer;
 }
-.product-list .item button img {
+.item .button {
+    justify-content: center;
+}
+.item .button img {
     width: 2em;
     height: 1em;
 }
-.product-list .item .category {
+img:hover, button:hover {
+    outline: solid 1px brown;
+}
+.item .plusMinus {
+    padding: 0 .5em;
+    justify-content: space-between;
+    background-color: var(--clr-red);
+    color: #ffffff;
+    cursor: auto;
+    border: brown;
+}
+.plus, .minus  {
+    border: solid 1px #ffffff;
+    background-color: var(--clr-red);
+    border-radius: 50%;
+    height: 1.5em;
+    width: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: 600;
+}
+.item .category {
     font-size: .9em;
     color: var(--clr-rose300);
 }
-.product-list .item .name {
+.item .name {
     font-size: 16px;
 }
-.product-list .item .price {
+.item .price {
     color: var(--clr-rose500)
+}
+
+.cart .cart-container  {
+    background-color: #fff;
+    padding: 0 1em;
+}
+.cart .cart-container h3 {
+    color: var(--clr-red);
+}
+.hide {
+    display: none;
 }
