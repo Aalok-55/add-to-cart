@@ -192,6 +192,6 @@ body {
 .empty-section > img {
     width: 13em;
 }
-.hide {
+.hidden {
     display: none;
 }
