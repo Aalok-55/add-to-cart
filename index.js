@@ -1,7 +1,10 @@
 const productListHTML = document.querySelector(".product-list");
 const buttonElem = document.querySelector(".button");
-const plusMinusElem = document.querySelector(".plusMinus");
 const cartListHTML = document.querySelector(".cartList");
+const emptySection = document.querySelector(".empty-section");
+const cartSection = document.querySelector(".cart-section");
+let totalCount = document.querySelector(".totalCount");
+let orderTotal = document.querySelector(".order-total");
 
 let listProducts = [];
 let cart = [];
@@ -34,7 +37,7 @@ const addDataToHTML = () => {
           </button>
           </div>
           <div class="addToCart-section">
-      <button class="button">
+      <button class="button" onClick= "addToCart(${key})">
        <img src="assets/images/icon-add-to-cart.svg " class="img">
        <span class="btn-text">Add to Cart</span>
        </button>
@@ -49,88 +52,106 @@ const addDataToHTML = () => {
   }
 };
 
-productListHTML.addEventListener("click", (e) => {
-  const positionClick = e.target;
-  const addToCartSection = document.querySelector(".addToCart-section");
-  const plusMinusSection = document.querySelector(".plusMinus-section");
-  let parentElem = "";
-  if (positionClick.parentElement.classList.contains("button")) {
-    parentElem = positionClick.parentElement.parentElement.dataset.id;
+let addToCart = (product_id) => {
+  let positionThisProductInCart = cart.findIndex(
+    (value) => value.product_id == product_id
+  );
+  //if the value doesnt exist, it returns -1
+  if (cart.length <= 0) {
+    cart = [
+      {
+        product_id: product_id,
+        quantity: 1,
+      },
+    ];
   } else {
-    parentElem = positionClick.parentElement.datset.id;
+    cart.push({
+      product_id: product_id,
+      quantity: 1,
+    });
   }
-  console.log(parentElem);
-  console.log(positionClick.parentElement.dataset.id);
-  // if (
-  //   positionClick.classList.contains("button") ||
-  //   positionClick.classList.contains("img") ||
-  //   positionClick.classList.contains("btn-text")
-  // ) {
-  //   document.querySelector(".addToCart-section").classList.toggle("hidden");
-  //   document.querySelector(".plusMinus-section").classList.toggle("hidden");
-  // }
-  // let productIndex = listProducts.findIndex(
-  //   (value) => value.id == positionClick.parentElement
-  // );
+  toggleBtn(product_id);
+  cartSection.classList.remove("hidden");
+  emptySection.classList.add("hidden");
+  addCartToHTML();
+};
+
+let addCartToHTML = () => {
+  cartListHTML.innerHTML = "";
+  if (cart.length > 0) {
+    cart.forEach((item) => {
+      let newCart = document.createElement("div");
+      newCart.classList.add("item");
+      newCart.dataset.id = item.product_id;
+
+      let positionProduct = listProducts.findIndex(
+        (value) => value.id == item.product_id
+      );
+      let info = listProducts[positionProduct];
+      newCart.innerHTML = `
+
+             <div class="details">
+               <div class="name">${info.name}</div>
+               <div class="numbers">
+                 <span id="times">$${
+                   cart[positionProduct].quantity
+                 }x</span>&nbsp;
+                 <span id="cost">&nbsp;@${info.price}</span>
+                 <span id="total-cost">$${
+                   cart[positionProduct].quantity * info.price
+                 }</span>
+               </div>
+               </div>
+             <div class="cross-sign">
+               <div>x</div>
+             </div>
+   `;
+      cartListHTML.appendChild(newCart);
+    });
+    let totalQuantity = 0;
+    cart.forEach((value) => {
+      totalQuantity += value.quantity;
+    });
+
+    totalCount.textContent = totalQuantity;
+
+    const plusMinusElem = document.querySelector(".plusMinus");
+  }
+};
+
+productListHTML.addEventListener("click", (e) => {
+  positionClick = e.target;
+
+  if (positionClick.classList.contains("plus")) {
+    let cartIndex =
+      positionClick.parentElement.parentElement.parentElement.dataset.id;
+    cart[cartIndex].quantity += 1;
+  } else if (positionClick.classList.contains("minus")) {
+    let cartIndex =
+      positionClick.parentElement.parentElement.parentElement.dataset.id;
+    if (cart[cartIndex].quantity > 1) {
+      cart[cartIndex].quantity -= 1;
+    } else {
+    }
+  }
+  addCartToHTML();
 });
-// let addToCart = (product_id) => {
-//   let positionThisProductInCart = cart.findIndex(
-//     (value) => value.product_id == product_id
-//   );
-//   // if the value doesnt exist, it returns -1
-//   if (cart.length <= 0) {
-//     cart = [
-//       {
-//         product_id: product_id,
-//         quantity: 1,
-//       },
-//     ];
-//   } else if (positionThisProductInCart < 0) {
-//     cart.push({
-//       product_id: product_id,
-//       quantity: 1,
-//     });
-//   } else {
-//     cart[positionThisProductInCart].quantity =
-//       cart[positionThisProductInCart].quantity + 1;
-//   }
-//   let positionClick = e.target.value;
-//   if (positionClick.contains(addToCartSection.childNodes)) {
-//     addToCartSection.classList.toggle("hidden");
-//     plusMinus.classList.toggle("hidden");
-//   }
-//   addCartToHTML();
-// };
-// let addCartToHTML = () => {
-//   cartListHTML.innerHTML = "";
-//   let totalQuanity = 0;
-//   if (cart.length > 0) {
-//     cart.forEach((item) => {
-//       let newCart = document.createElement("div");
-//       newCart.classList.add("item");
-//       newCart.dataset.id = item.product_id;
 
-//       let positionProduct = listProducts.findIndex(
-//         (value) => value.id == item.product_id
-//       );
-//       let info = listProducts[positionProduct];
-//       cartListHTML.appendChild(newCart);
-//       newCart.innerHTML = `
+const toggleBtn = (product_id) => {
+  const itemNodeList = document.querySelectorAll(".item");
+  let array = Array.from(itemNodeList);
+  const selectedButtonIndex = array.findIndex(
+    (value) => value.dataset.id == product_id
+  );
+  const selectedParentElement = itemNodeList[selectedButtonIndex];
 
-//             <div class="details">
-//               <div class="name">${info.name}</div>
-//               <div class="numbers">
-//                 <span id="times">1x</span>&nbsp;
-//                 <span id="cost">&nbsp;@${info.price}</span>
-//                 <span id="total-cost">$${info.price}</span>
-//               </div>
-
-//             <div class="cross-sign">
-//               <div>x</div>
-//             </div>
-//   `;
-//     });
-//     cartListHTML.appendChild(newCart);
-//   }
-// };
+  const addToCartChild = selectedParentElement.querySelector(
+    "div.addToCart-section"
+  );
+  const plusMinusChild = selectedParentElement.querySelector(
+    "div.plusMinus-section"
+  );
+  addToCartChild.classList.toggle("hidden");
+  plusMinusChild.classList.toggle("hidden");
+};
 initApp();
