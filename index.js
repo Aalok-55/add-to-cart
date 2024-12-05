@@ -1,5 +1,4 @@
 const productListHTML = document.querySelector(".product-list");
-const buttonElem = document.querySelector(".button");
 const cartListHTML = document.querySelector(".cartList");
 const emptySection = document.querySelector(".empty-section");
 const cartSection = document.querySelector(".cart-section");
@@ -29,15 +28,13 @@ const addDataToHTML = () => {
       <div class="image">
       <img src="${product["image"]["desktop"]}" alt=""/>
       </div>
-      <div class="plusMinus-section hidden">
-      <button class="plusMinus">
-            <span class="minus">-</span>
+      <div class="plusMinus-section hidden button">
+            <button class="minus" onclick="minus(${key})">-</button>
             <span class="itemCount">1</span>
-            <span class="plus">+</span>
-          </button>
+            <button class="plus" onclick="plus(${key})">+</button>
           </div>
-          <div class="addToCart-section">
-      <button class="button" onClick= "addToCart(${key})">
+          <div class="addToCart-section button">
+      <button onClick= "addToCart(${key})">
        <img src="assets/images/icon-add-to-cart.svg " class="img">
        <span class="btn-text">Add to Cart</span>
        </button>
@@ -77,11 +74,15 @@ let addToCart = (product_id) => {
 };
 
 let addCartToHTML = () => {
-  cartListHTML.innerHTML = "";
-  if (cart.length > 0) {
+  if (cart.length <= 0) {
+    cartSection.classList.add("hidden");
+    emptySection.classList.remove("hidden");
+  } else {
+    totalCost = [];
+    cartListHTML.innerHTML = "";
     cart.forEach((item) => {
       let newCart = document.createElement("div");
-      newCart.classList.add("item");
+      newCart.classList.add("cart-item");
       newCart.dataset.id = item.product_id;
 
       let positionProduct = listProducts.findIndex(
@@ -93,49 +94,57 @@ let addCartToHTML = () => {
              <div class="details">
                <div class="name">${info.name}</div>
                <div class="numbers">
-                 <span id="times">$${
-                   cart[positionProduct].quantity
-                 }x</span>&nbsp;
+                 <span id="times">$${item.quantity}x</span>&nbsp;
                  <span id="cost">&nbsp;@${info.price}</span>
-                 <span id="total-cost">$${
-                   cart[positionProduct].quantity * info.price
-                 }</span>
+                 <span id="total-cost">$${item.quantity * info.price}</span>
                </div>
                </div>
              <div class="cross-sign">
-               <div>x</div>
+               <button onclick="closeTab(${item.product_id})">x</button>
              </div>
    `;
       cartListHTML.appendChild(newCart);
+      totalCost.push(info.price * item.quantity);
     });
     let totalQuantity = 0;
     cart.forEach((value) => {
       totalQuantity += value.quantity;
     });
-
+    let sum = 0;
+    totalCost.forEach((price) => (sum += price));
     totalCount.textContent = totalQuantity;
-
-    const plusMinusElem = document.querySelector(".plusMinus");
+    orderTotal.textContent = `$${sum}`;
   }
+  console.log(cart);
 };
 
-productListHTML.addEventListener("click", (e) => {
-  positionClick = e.target;
-
-  if (positionClick.classList.contains("plus")) {
-    let cartIndex =
-      positionClick.parentElement.parentElement.parentElement.dataset.id;
-    cart[cartIndex].quantity += 1;
-  } else if (positionClick.classList.contains("minus")) {
-    let cartIndex =
-      positionClick.parentElement.parentElement.parentElement.dataset.id;
-    if (cart[cartIndex].quantity > 1) {
-      cart[cartIndex].quantity -= 1;
-    } else {
-    }
+const plus = (id) => {
+  let cartIndex = cart.findIndex((item) => item.product_id == id);
+  cart[cartIndex].quantity += 1;
+  changeitemCount(id, cartIndex);
+};
+const minus = (id) => {
+  let cartIndex = cart.findIndex((item) => item.product_id == id);
+  if (cart[cartIndex].quantity > 1) {
+    cart[cartIndex].quantity -= 1;
+    changeitemCount(id, cartIndex);
+  } else if (cart[cartIndex].quantity <= 1) {
+    console.log(cartIndex);
+    removeFromCart(cartIndex);
+    toggleBtn(id);
   }
+};
+const changeitemCount = (id, cartIndex) => {
+  const itemCountNode = document.querySelectorAll(".itemCount");
+  const itemCountNodeList = Array.from(itemCountNode);
+
+  let itemIndex = itemCountNodeList.findIndex(
+    (value) => value.parentElement.parentElement.dataset.id == id
+  );
+  console.log(itemIndex);
+  itemCountNode[itemIndex].textContent = cart[cartIndex].quantity;
   addCartToHTML();
-});
+};
 
 const toggleBtn = (product_id) => {
   const itemNodeList = document.querySelectorAll(".item");
@@ -154,4 +163,19 @@ const toggleBtn = (product_id) => {
   addToCartChild.classList.toggle("hidden");
   plusMinusChild.classList.toggle("hidden");
 };
+
+const removeFromCart = (cartIndex) => {
+  cart.splice(cartIndex, 1);
+  addCartToHTML();
+};
+
+const closeTab = (cart_id) => {
+  const cartIndex = cart.findIndex((item) => item.product_id === cart_id);
+  const item_id = listProducts.findIndex((item) => item.id === cart_id);
+  cart[cartIndex].quantity = 1;
+  toggleBtn(item_id);
+  changeitemCount(item_id, cartIndex);
+  removeFromCart(cartIndex);
+};
+
 initApp();

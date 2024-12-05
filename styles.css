@@ -17,6 +17,9 @@ body {
     background-color: var(--clr-rose100);
     font-weight: 550;
 }
+button {
+    cursor: pointer;
+}
 .main {
     display: flex;
     margin: 3em;
@@ -39,51 +42,51 @@ body {
     border-radius: 5px;
     margin-bottom: 1em;
 }
-.item button {
-    display: flex;
-    align-items: center;
-    width: 60%;
-    height: 3em;
-    background-color: #fff;
-    border: solid 1px #000000;
-    border-radius: 20px;
+.item .button {
     position: absolute;
+    background-color: #fff;
+    border: solid 1px black;
+    border-radius: 10em;
+    width: 70%;
+    height: 2.5em;
     left: 0;
     right: 0;
-    bottom: 5em;
-    margin: 0 auto;
-    cursor: pointer;
-    font-weight: 550;
+    bottom: 4em;
+    margin: 0 auto
 }
-.item .button {
+.item .addToCart-section button {
+    background-color: #fff;
+    border-radius: 10em;
+    width: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    border: none;
+    height: 100%;
 }
-.item .button img {
-    width: 2.5em;
-    height: 1.5em;
-}
-.image > img:hover, button:hover {
-    outline: solid 1px brown;
-}
-.item .plusMinus {
-    padding: 0 .5em;
-    justify-content: space-between;
+.item .plusMinus-section  {
+    box-sizing: border-box;
     background-color: var(--clr-red);
-    color: #ffffff;
-    cursor: auto;
-    border: brown;
+    color: #fff;
+    padding: 0 .5em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.plus, .minus  {
+.item .plusMinus-section button {
+    height: 2em;
+    width: 2em;
     border: solid 1px #ffffff;
     background-color: var(--clr-red);
+    color: #fff;
     border-radius: 50%;
-    height: 1.5em;
-    width: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-weight: 600;
+}
+.item .addToCart-section:hover, .item .image > img:hover {
+    outline: solid 1px var(--clr-red);
+}
+.item .plusMinus-section button:hover {
+    outline: solid 1px #fff;
+    border: none;
 }
 .item .category {
     font-size: .9em;
@@ -107,44 +110,46 @@ body {
 .cart-container .cart h3 {
     color: var(--clr-red);
 }
-.cart .item {
+.cart .cart-item {
     display: grid;
     grid-template-columns: 3fr 1fr;
     padding: 1em 0;
     border-bottom: solid 1px #000000;
     grid-auto-flow: column;
 }
-.cart .item .details {
+.cart .cart-item .details {
     display: flex;
     flex-direction: column;
     gap: .5em;
 }
-.item .details .name{
+.cart-item .details .name{
     font-weight: 500;
 
 }
-.item .details .numbers {
+.cart-item .details .numbers {
     font-size: .9em;
 }
-.item .details .numbers #times {
+.cart-item .details .numbers #times {
     color: var(--clr-red);
     font-weight: 500;
 }
-.item .details .numbers #cost {
+.cart-item .details .numbers #cost {
     color: var(--clr-rose300)
 }
-.item .details .numbers #total-cost {
+.cart-item .details .numbers #total-cost {
     color: var(--clr-rose500);
     font-weight: 600;
 }
-.cart .item .cross-sign {
+.cart .cart-item .cross-sign {
     justify-self: end;
     align-self: center;
     font-size: .9em;
     cursor: pointer;
 }
-.cart .item .cross-sign div {
+.cart .cart-item .cross-sign button {
     display: flex;
+    width: 100%;
+    height: 100%;
     align-items: center;
     justify-content: center;
     border: solid 1px var(--clr-rose500);
