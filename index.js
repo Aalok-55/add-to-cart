@@ -4,6 +4,11 @@ const emptySection = document.querySelector(".empty-section");
 const cartSection = document.querySelector(".cart-section");
 let totalCount = document.querySelector(".totalCount");
 let orderTotal = document.querySelector(".order-total");
+const confirmationSection = document.querySelector(".confirmation-section");
+const confirmedProductsHTML = document.querySelector(".confirmed-products");
+const submitBtn = document.querySelector("#submit");
+const newOrder = document.querySelector("#new-order");
+const confirmedTotal = document.querySelector(".confirmed-total");
 
 let listProducts = [];
 let cart = [];
@@ -100,7 +105,8 @@ let addCartToHTML = () => {
                </div>
                </div>
              <div class="cross-sign">
-               <button onclick="closeTab(${item.product_id})">x</button>
+               <button onclick="closeTab(${item.product_id})">
+               <img src="./assets/images/icon-remove-item.svg" /></button>
              </div>
    `;
       cartListHTML.appendChild(newCart);
@@ -140,7 +146,7 @@ const changeitemCount = (id, cartIndex) => {
   let itemIndex = itemCountNodeList.findIndex(
     (value) => value.parentElement.parentElement.dataset.id == id
   );
-  console.log(itemIndex);
+
   itemCountNode[itemIndex].textContent = cart[cartIndex].quantity;
   addCartToHTML();
 };
@@ -177,4 +183,52 @@ const closeTab = (cart_id) => {
   removeFromCart(cartIndex);
 };
 
+submitBtn.addEventListener("click", () => {
+  confirmationSection.classList.remove("hidden");
+  showConfirmation();
+});
+
+newOrder.addEventListener("click", () => {
+  cart = [];
+  confirmationSection.classList.add("hidden");
+  cartSection.classList.add("hidden");
+  emptySection.classList.remove("hidden");
+  addDataToHTML();
+});
+
+const showConfirmation = () => {
+  let totalCost = [];
+  confirmedProductsHTML.innerHTML = "";
+  cart.forEach((item) => {
+    let newCart = document.createElement("div");
+    newCart.classList.add("confirmation-item");
+
+    let positionProduct = listProducts.findIndex(
+      (value) => value.id == item.product_id
+    );
+    let info = listProducts[positionProduct];
+    newCart.innerHTML = `
+
+            <img
+              src="${info["image"]["thumbnail"]}"
+              id="thumbnail"
+            />
+            <div class="item-details">
+              <span>${info.name}</span>
+              <div class="numbers">
+                <span id="item-number">${item.quantity}x&nbsp;&nbsp;</span>
+                <span id="item-price">@&nbsp;$${info.price}</span>
+              </div>
+            </div>
+            <div id="total-price">$${item.quantity * info.price}</div>
+
+   `;
+
+    confirmedProductsHTML.appendChild(newCart);
+    totalCost.push(info.price * item.quantity);
+  });
+  let sum = 0;
+  totalCost.forEach((price) => (sum += price));
+  confirmedTotal.textContent = `$${sum}`;
+};
 initApp();

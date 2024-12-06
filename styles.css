@@ -16,6 +16,7 @@ body {
     padding: 0;
     background-color: var(--clr-rose100);
     font-weight: 550;
+    position: relative;
 }
 button {
     cursor: pointer;
@@ -143,20 +144,20 @@ button {
 .cart .cart-item .cross-sign {
     justify-self: end;
     align-self: center;
-    font-size: .9em;
     cursor: pointer;
 }
 .cart .cart-item .cross-sign button {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    border: solid 1px var(--clr-rose500);
-    color: var(--clr-rose500);
     border-radius: 50%;
-    height: 1em;
-    width: 1em;
+    border: solid 1px var(--clr-red);
+    height:1.2em;
+    width: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart .cart-item .cross-sign img {
+    width: .8em;
+    height: .8em;
 }
 .cart .order {
     display: flex;
@@ -197,8 +198,88 @@ button {
 .empty-section > img {
     width: 13em;
 }
-.confirmation-section {
 
+.confirmation-section {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25em;
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 10px;
+}
+.confirmation-section h1 {
+    padding: 0;
+    margin: 0;
+}
+
+.confirmation-section p {
+    color: var(--clr-rose400);
+    font-size: .8em;
+    margin-top: 0;
+}
+.confirmation-section .confirmation-list{
+    background-color: var(--clr-rose100);
+}
+.confirmation-section .confirmed-products {
+    max-height: 19em;
+    padding: 0 1em 0 1em;
+    overflow: scroll;
+}
+.confirmation-item {
+    padding: 1em 0 1em 0;
+    display: grid;
+    grid-template-columns: 5em 1fr 3em;
+    grid-auto-flow: column;
+    border-bottom: solid 1px var(--clr-rose300)
+}
+
+.confirmation-item #total-price {
+    align-self: center;
+}
+.confirmation-item .item-details {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+}
+.item-details > span {
+    font-weight: 600;
+}
+.item-details #item-number {
+    color: var(--clr-red)
+}
+.item-details #item-price {
+    color: var(--clr-rose300)
+}
+.confirmation-section .order-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5em 1em;
+}
+.order-total > span:first-of-type {
+    color: var(--clr-rose500)
+}
+.order-total > span:last-of-type{
+    font-size: 1.5em;
+    font-weight: 700;
+}
+.confirmation-item img {
+    width: 4em;
+    height: 4em;
+    border-radius: 5px;
+}
+#new-order {
+    margin-top: 2em;
+    width: 100%;
+    padding: 1em;
+    background-color: var(--clr-red);
+    color: var(--clr-rose50);
+    font-weight: 500;
+    font-size: 1em;
+    border-radius: 2em;
+    border: none;
 }
 .hidden {
     display: none;
