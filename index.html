@@ -8,7 +8,7 @@
     <script src="index.js" defer></script>
   </head>
   <body>
-    <div class="main">
+    <div class="main-area">
       <div class="product">
         <h2>Desserts</h2>
 
@@ -46,6 +46,29 @@
         </section>
       </div>
     </div>
-
+    <div class="confirmation-section">
+      <div class="checked"></div>
+      <h2>Order Confirmed</h2>
+      <p>We hope you enjoy your food!</p>
+      <div class="confirmation-list">
+        <div class="confirmation-item">
+          <img src="assets/images/image-tiramisu-thumbnail.jpg" id="thumbnail">
+          <div class="item-details">
+            <span>Classic Tiramisu</span>
+            <div class="numbers">
+            <span id="item-number">1x</span>
+            @<span id="item-price">$5.50</span>
+          </div>
+        </div>
+        <div id="total-price">
+          $5.50
+        </div>
+      </div>
+      <div class="order-total">
+        <span>Order total</span>
+        <span class="order-total">$46.50</span>
+      </div>
+      <button type="submit">Start New Order</button>
+    </div>
   </body>
 </html>

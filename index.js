@@ -115,7 +115,6 @@ let addCartToHTML = () => {
     totalCount.textContent = totalQuantity;
     orderTotal.textContent = `$${sum}`;
   }
-  console.log(cart);
 };
 
 const plus = (id) => {

@@ -20,7 +20,7 @@ body {
 button {
     cursor: pointer;
 }
-.main {
+.main-area {
     display: flex;
     margin: 3em;
     gap: 2em;
@@ -196,6 +196,9 @@ button {
 }
 .empty-section > img {
     width: 13em;
+}
+.confirmation-section {
+
 }
 .hidden {
     display: none;
